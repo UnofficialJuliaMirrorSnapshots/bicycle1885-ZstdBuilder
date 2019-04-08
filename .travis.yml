@@ -1,0 +1,31 @@
+language: julia
+os:
+- linux
+julia:
+- 0.7
+notifications:
+  email: false
+git:
+  depth: 99999999
+cache:
+  directories:
+  - downloads
+env:
+  global:
+  - BINARYBUILDER_DOWNLOADS_CACHE=downloads
+  - BINARYBUILDER_AUTOMATIC_APPLE=true
+sudo: required
+before_script:
+- julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/JuliaPackaging/BinaryBuilder.jl", rev="master"))'
+script:
+- julia build_tarballs.jl
+deploy:
+  provider: releases
+  api_key:
+    secure: WPwWqoBChlLDRU3IP72SKNyvnVbyzTSQJxAOfxebjjx7FBzz4aVKZiUDlkBCHnYs5MZgDqxzqJGxz89V5pGSo07D8Zs6pty6BH78XqIoABCW+YZmVx2YL8a9gTliaeSxYDorfbia49yU91Pe4BNRmMRO07BqNr/shd/J1W9lY44IktKyKw/yRIHUbYFSQkRnf3EsOAwgram2IQMICh4QzkOHLT/6p8KZmuA2zD+rdfR0k9dKnKSSacJHqmCdRD/HgDgOAaOa5Ha76nFmWecj5Yl/+rcLml7sKausPcfQFa/t1f3vArBjhUE47NoiJwgnr03MGFwLs58pJ8DWH3B1vQV9qjR1ax7056K7JbEz+9RSDbL8jAfGAqC8AaR+40oxLDKPQLjyVf8Fxlp/17D480ZrMlodrOv0YPIKX7Keo9TbMJNUSmh+I5mDStEmOUcmTbHGBUTGXuSkPaRnGvxba6ejmwjE5zoxTHyJDE4Is8ek8cZ5rUEogFtJ6szyPMLSe33E3EeMBzZujnuwKTKpQsh1Fy4Mr8fq/zED5oxYCyQjLheAep/tcPPj+3UDvbJZJJL4R19oGTr3PBF7ni4DTKnM6VYmrF8d9WYtsWUZhfPKPUR7kAi2awS8IVyJIBYv6Ji8NxpM3xzEGJeAS7eL/iKjK0X4GlvsJnrMFo2rV6U=
+  file_glob: true
+  file: products/*
+  skip_cleanup: true
+  on:
+    repo: bicycle1885/ZstdBuilder
+    tags: true
